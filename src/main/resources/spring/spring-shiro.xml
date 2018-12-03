@@ -27,12 +27,9 @@
            authc 需要验证 -->
         <property name="filterChainDefinitions">
             <value>
-                <!--/login.html = anon-->
                 /toLogin.html = anon
                 / = anon
-                <!--/subLogin = anon-->
-                <!--/ = anon-->
-               <!-- /* = authc-->
+                /* = authc
             </value>
         </property>
     </bean>

@@ -14,7 +14,6 @@ import org.apache.shiro.util.ByteSource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import javax.annotation.Resource;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,7 +24,7 @@ import java.util.Set;
 public class MyShiroRealm extends AuthorizingRealm {
 
 
-   // @Resource
+    // @Resource
     private UserInfoMapper userInfoMapper;
 
     /**
@@ -65,7 +64,7 @@ public class MyShiroRealm extends AuthorizingRealm {
         String loginName = (String) authenticationToken.getPrincipal();
         //2、通过用户名在数据库中获取凭证
         // String userPassWordByUserName = userInfoMapper.getUserPassWordByUserName(userName);
-       UserInfo userInfo = getUserInfoByLoginName(loginName);
+        UserInfo userInfo = getUserInfoByLoginName(loginName);
         if (userInfo != null && !StringUtils.isEmpty(userInfo.getPassWord())) {
             SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(loginName, userInfo.getPassWord(), "myShiroRealm");
             //加盐进行加密
@@ -76,8 +75,8 @@ public class MyShiroRealm extends AuthorizingRealm {
     }
 
 
-    private UserInfo getUserInfoByLoginName(String loginName){
-        if(!"Dawei".equals(loginName)) {
+    private UserInfo getUserInfoByLoginName(String loginName) {
+        if (!"Dawei".equals(loginName)) {
             return null;
         }
         UserInfo userInfo = new UserInfo();
@@ -93,6 +92,7 @@ public class MyShiroRealm extends AuthorizingRealm {
         roles.add("user");
         return roles;
     }
+
     private Set<String> getUserPermissionByUserName(String userName) {
         Set<String> permissionSet = new HashSet<>();
         permissionSet.add("user:update");

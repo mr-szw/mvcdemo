@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.mvc.demo.enums.ErrorEnum;
 import com.mvc.demo.pojo.ResultDto;
 import com.mvc.demo.pojo.UserInfoDto;
+import com.mvc.demo.utils.RequestHelper;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -17,6 +18,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Dawei 2018/11/17
@@ -32,15 +35,24 @@ public class LoginController {
      * @param userInfoDto 登陆用户信息体
      */
     @PostMapping(value = "/subLogin")
-    public String login(UserInfoDto userInfoDto, Model model, String callbackUrl) {
+    public String login(UserInfoDto userInfoDto, Model model, String callbackUrl, HttpServletRequest request) {
         logger.info("登陆信息为 userInfo={}, callbackUrl={}", JSON.toJSONString(userInfoDto), callbackUrl);
+
         ResultDto<String> resultDto = new ResultDto<>();
         String resultUrl = "/toLogin";
         if (userInfoDto == null || StringUtils.isEmpty(userInfoDto.getLoginName()) || StringUtils.isEmpty(userInfoDto.getPassWord()) || userInfoDto.getRememberType() == null) {
             resultDto.setParamError();
         } else {
+            String ipAddress = RequestHelper.getIpAddress(request);
+            userInfoDto.setLoginHost(ipAddress);
+            Integer rememberType = userInfoDto.getRememberType();
+            boolean rememberMe = false;
+            if(rememberType != null && rememberType == 1) {
+                rememberMe = true;
+            }
             //获取主体
             Subject subject = SecurityUtils.getSubject();
+            //UsernamePasswordToken token = new UsernamePasswordToken(userInfoDto.getLoginName(), userInfoDto.getPassWord(), rememberMe);
             UsernamePasswordToken token = new UsernamePasswordToken(userInfoDto.getLoginName(), userInfoDto.getPassWord());
             try {
                 subject.login(token);
