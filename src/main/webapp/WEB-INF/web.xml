@@ -54,4 +54,16 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
+
+    <!-- 允许返回html 试图 -->
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.html</url-pattern>
+    </servlet-mapping>
+
+
+    <welcome-file-list>
+        <welcome-file>/static/views/toLogin.html</welcome-file>
+    </welcome-file-list>
+
 </web-app>

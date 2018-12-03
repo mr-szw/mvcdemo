@@ -19,8 +19,6 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
 
-    <mvc:default-servlet-handler default-servlet-name="springMVC"/>
-
     <!--
     <mvc:interceptors>
         <mvc:interceptor>
@@ -44,13 +42,12 @@
 
 
     <!-- 配置静态文件访问配置 -->
-    <mvc:resources mapping="/**" location="/static/views/" />
+    <!--<mvc:resources mapping="/**" location="/static/views/" />-->
 
     <!-- 对模型视图名称的解析，即在模型视图名称添加前后缀(如果最后一个还是表示文件夹,则最后的斜杠不要漏了) 使用JSP-->
     <!-- 默认的视图解析器 在上边的解析错误时使用 (默认使用html)- -->
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/static/views/" />
-        <!--<property name="prefix" value="/WEB-INF/views/"/>-->
         <property name="suffix" value=".html"/>
     </bean>
 </beans>

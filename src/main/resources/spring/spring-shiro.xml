@@ -19,17 +19,20 @@
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="shiroManager" />
         <!-- 登陆页URL-->
-        <property name="loginUrl" value="login" />
+        <property name="loginUrl" value="/static/views/toLogin.html" />
         <!-- 校验不成功的对应页面 -->
-        <property name="unauthorizedUrl" value="403.html" />
+        <property name="unauthorizedUrl" value="/static/views/toLogin.html" />
         <!-- 拦截器链定义
            anon 不需要验证
            authc 需要验证 -->
         <property name="filterChainDefinitions">
             <value>
-                /login.html = anon
-                /subLogin = anon
-                /* = authc
+                <!--/login.html = anon-->
+                /toLogin.html = anon
+                / = anon
+                <!--/subLogin = anon-->
+                <!--/ = anon-->
+               <!-- /* = authc-->
             </value>
         </property>
     </bean>
