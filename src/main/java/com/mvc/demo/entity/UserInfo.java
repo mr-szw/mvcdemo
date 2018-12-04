@@ -18,6 +18,25 @@ public class UserInfo {
     /* 加权盐值 */
     private String makeSalt;
 
+    /* 记住密码 类型*/
+    private Integer rememberType;
+
+    /* ip 地址 */
+    private String ipAddress;
+
+    public UserInfo() {
+    }
+
+    public UserInfo(Long id, String loginName, String userName, String passWord, String makeSalt, Integer rememberType, String ipAddress) {
+        this.id = id;
+        this.loginName = loginName;
+        this.userName = userName;
+        this.passWord = passWord;
+        this.makeSalt = makeSalt;
+        this.rememberType = rememberType;
+        this.ipAddress = ipAddress;
+    }
+
     public Long getId() {
         return id;
     }
@@ -56,5 +75,21 @@ public class UserInfo {
 
     public void setMakeSalt(String makeSalt) {
         this.makeSalt = makeSalt;
+    }
+
+    public Integer getRememberType() {
+        return rememberType;
+    }
+
+    public void setRememberType(Integer rememberType) {
+        this.rememberType = rememberType;
+    }
+
+    public String getIpAddress() {
+        return ipAddress;
+    }
+
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
     }
 }

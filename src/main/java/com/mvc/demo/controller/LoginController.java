@@ -9,6 +9,8 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,6 +75,8 @@ public class LoginController {
                 resultDto.setData(e.getMessage());
             }
         }
+
+
         logger.info("登陆结果为： resultUrl={} resultDto={}", resultUrl, JSON.toJSONString(resultDto));
         model.addAttribute("resultData", resultDto);
         return resultUrl;
@@ -99,6 +103,20 @@ public class LoginController {
         Subject subject = SecurityUtils.getSubject();
         //已经认证跳转取去主页面 否则去登陆
         return subject.isAuthenticated() ? "/homePageIndex" : "/toLogin";
+    }
+
+
+    /**
+     *
+     * @return 注解的权限配置
+     * 需要有什么角色
+     * 需要有什么权限
+     */
+    @RequiresRoles(value = {"admin", "userA"})
+    @RequiresPermissions(value = {"user:delete"})
+    @GetMapping(value = "delete")
+    public String deleteOp() {
+        return "权限";
     }
 
 }

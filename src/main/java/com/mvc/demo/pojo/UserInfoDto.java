@@ -25,6 +25,19 @@ public class UserInfoDto implements Serializable {
     /* 登陆的主机 信息 例如：IP */
     private String loginHost;
 
+    public UserInfoDto() {
+    }
+
+    public UserInfoDto(Long id, String loginName, String userName, String passWord, String makeSalt, Integer rememberType, String loginHost) {
+        this.id = id;
+        this.loginName = loginName;
+        this.userName = userName;
+        this.passWord = passWord;
+        this.makeSalt = makeSalt;
+        this.rememberType = rememberType;
+        this.loginHost = loginHost;
+    }
+
     public Long getId() {
         return id;
     }

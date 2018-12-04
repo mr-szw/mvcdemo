@@ -1,6 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:property-placeholder location="classpath*:mysql.properties" ignore-unresolvable="true"/>
+
+    <!-- Shiro 数据库 -->
+    <bean id="shiroDataSource" class="com.alibaba.druid.pool.DruidDataSource" >
+        <property name="driverClassName" value="${shiro.database.driver}" />
+        <property name="url" value="${shiro.database.url}" />
+        <property name="username" value="${shiro.database.username}" />
+        <property name="password" value="${shiro.database.password}" />
+        <property name="maxActive" value="${shiro.database.maxActive}"/>
+        <property name="maxWait" value="${shiro.database.maxWait}"/>
+        <property name="minIdle" value="${shiro.database.minIdle}"/>
+        <property name="initialSize" value="${shiro.database.initial.size}"/>
+        <property name="timeBetweenEvictionRunsMillis" value="10000"/>
+        <!-- 每隔毫秒秒检查一次连接池中空闲的连接 -->
+        <property name="minEvictableIdleTimeMillis" value="10000"/>
+        <!-- 连接池中连接可空闲的时间,毫秒 -->
+        <property name="removeAbandoned" value="true"/>
+        <!-- 是否清理removeAbandonedTimeout秒没有使用的活动连接,清理后并没有放回连接池 -->
+        <property name="removeAbandonedTimeout" value="300"/>
+        <!-- 活动连接的最大空闲时间 -->
+        <property name="testOnBorrow" value="true"/>
+        <property name="validationQuery" value="SELECT 1"/>
+        <property name="logAbandoned" value="true"/>
+        <property name="testWhileIdle" value="true"/>
+    </bean>
+
+
+    <!-- Shiro 的数据源工厂 -->
+    <bean id="shirSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="shiroDataSource" />
+        <property name="mapperLocations"  value="classpath*:shiroXmlMapper/*.xml" />
+    </bean>
+    <!-- mapper 映射 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.mvc.demo.mapper"/>
+        <property name="sqlSessionFactoryBeanName" value="shirSqlSessionFactory"/>
+    </bean>
+
 
 </beans>

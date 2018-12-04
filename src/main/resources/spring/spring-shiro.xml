@@ -3,7 +3,7 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <!-- 加密器 -->
+    <!-- 加密器  凭证匹配器 -->
     <bean id="credentialMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
         <property name="hashAlgorithmName" value="md5" />
         <property name="hashIterations" value="1" />
@@ -17,7 +17,7 @@
 
     <!-- ShiroFilter 的过滤器工厂 -->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
-        <property name="securityManager" ref="shiroManager" />
+        <property name="securityManager" ref="shiroSecurityManager" />
         <!-- 登陆页URL-->
         <property name="loginUrl" value="/static/views/toLogin.html" />
         <!-- 校验不成功的对应页面 -->
@@ -28,7 +28,7 @@
         <property name="filterChainDefinitions">
             <value>
                 /toLogin.html = anon
-                / = anon
+                /subLogin = anon
                 /* = authc
             </value>
         </property>
@@ -36,7 +36,23 @@
 
 
     <!-- Shiro的 SecurityManager -->
-    <bean id="shiroManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+    <bean id="shiroSecurityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="realm" ref="myShiroRealm" />
+    </bean>
+
+    <!-- Shiro生命周期处理器 -->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
+
+
+    <bean id="attributeSourceAdvisor" class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor" >
+        <property name="securityManager" ref="shiroSecurityManager" />
+    </bean>
+
+
+    <!-- 会话Cookie模板 -->
+    <bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
+        <constructor-arg value="sid"/>
+        <property name="httpOnly" value="true"/>
+        <property name="maxAge" value="180000"/>
     </bean>
 </beans>
