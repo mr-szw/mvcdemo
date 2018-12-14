@@ -2,6 +2,7 @@ package com.mvc.demo.entity;
 
 /**
  * @author Dawei 2018/12/1
+ * 数据库实体
  */
 public class UserInfo {
 

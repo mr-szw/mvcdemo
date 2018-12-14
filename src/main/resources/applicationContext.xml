@@ -8,13 +8,14 @@
        http://www.springframework.org/schema/aop/spring-aop.xsd">
 
 
-
-
     <!-- 开始注解支持 -->
     <aop:config proxy-target-class="true" />
 
     <import resource="classpath*:spring/spring-shiro.xml" />
     <import resource="classpath*:spring/spring-database.xml" />
+    <import resource="classpath*:spring/spring-redis.xml" />
+
+    <bean id="springWrapper" class="com.mvc.demo.utils.SpringWrapper" />
 
 
 </beans>

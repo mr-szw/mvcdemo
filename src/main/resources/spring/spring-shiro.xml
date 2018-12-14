@@ -10,7 +10,7 @@
     </bean>
 
     <!-- Shiro 的数据源管控类 -->
-    <bean id="myShiroRealm" class="com.mvc.demo.shiro.realm.MyShiroRealm">
+    <bean id="myShiroRealm" class="com.mvc.demo.shiro.MyShiroRealm">
         <property name="name" value="myShiroRealm" />
         <property name="credentialsMatcher" ref="credentialMatcher" />
     </bean>
@@ -38,6 +38,9 @@
     <!-- Shiro的 SecurityManager -->
     <bean id="shiroSecurityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="realm" ref="myShiroRealm" />
+        <property name="sessionManager" ref="webSessionManager" />
+        <property name="cacheManager" ref="cacheManager" />
+        <property name="rememberMeManager" ref="cookieRememberMeManager" />
     </bean>
 
     <!-- Shiro生命周期处理器 -->
@@ -51,8 +54,25 @@
 
     <!-- 会话Cookie模板 -->
     <bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
-        <constructor-arg value="sid"/>
+        <constructor-arg value="rememberMe"/>
         <property name="httpOnly" value="true"/>
         <property name="maxAge" value="180000"/>
+    </bean>
+    <bean id="cookieRememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
+        <property name="cookie" ref="sessionIdCookie" />
+    </bean>
+
+    <!-- SessionManager -->
+    <bean id="webSessionManager" class="com.mvc.demo.shiro.MyWebSessionManager" >
+        <property name="sessionDAO" ref="redisSessionDao" />
+    </bean>
+    <!-- Redis Session Dao -->
+    <bean  id="redisSessionDao" class="com.mvc.demo.service.RedisSessionDao" >
+        <!-- 失效时间 两周 秒为单位 -->
+        <property name="generalExpireTime" value="1209600" />
+    </bean>
+
+    <!-- 使用缓存管理 -->
+    <bean id="cacheManager" class="com.mvc.demo.shiro.MyRedisCacheManager" >
     </bean>
 </beans>

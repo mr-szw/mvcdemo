@@ -1,4 +1,4 @@
-package com.mvc.demo.shiro.realm;
+package com.mvc.demo.shiro;
 
 import com.mvc.demo.entity.UserInfo;
 import com.mvc.demo.mapper.UserInfoMapper;

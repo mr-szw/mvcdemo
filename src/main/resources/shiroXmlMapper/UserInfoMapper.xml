@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mvc.demo.mapper.UserInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.mvc.demo.entity.UserInfo" >
+    <constructor >
+      <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <idArg column="login_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="user_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="pass_word" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="make_salt" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="remember_type" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="ip_address" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    id, login_name, user_name, pass_word, make_salt, remember_type, ip_address
+  </sql>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.mvc.demo.entity.UserInfo" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_shiro_user_info
+    where id = #{id,jdbcType=BIGINT}
+      and login_name = #{loginName,jdbcType=VARCHAR}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="com.mvc.demo.entity.UserInfo" >
+    delete from t_shiro_user_info
+    where id = #{id,jdbcType=BIGINT}
+      and login_name = #{loginName,jdbcType=VARCHAR}
+  </delete>
+
+  <insert id="insert" parameterType="com.mvc.demo.entity.UserInfo" >
+    insert into t_shiro_user_info (id, login_name, user_name,
+      pass_word, make_salt, remember_type,
+      ip_address)
+    values (#{id,jdbcType=BIGINT}, #{loginName,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR},
+      #{passWord,jdbcType=VARCHAR}, #{makeSalt,jdbcType=VARCHAR}, #{rememberType,jdbcType=INTEGER},
+      #{ipAddress,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.mvc.demo.entity.UserInfo" >
+    insert into t_shiro_user_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="loginName != null" >
+        login_name,
+      </if>
+      <if test="userName != null" >
+        user_name,
+      </if>
+      <if test="passWord != null" >
+        pass_word,
+      </if>
+      <if test="makeSalt != null" >
+        make_salt,
+      </if>
+      <if test="rememberType != null" >
+        remember_type,
+      </if>
+      <if test="ipAddress != null" >
+        ip_address,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="loginName != null" >
+        #{loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null" >
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="passWord != null" >
+        #{passWord,jdbcType=VARCHAR},
+      </if>
+      <if test="makeSalt != null" >
+        #{makeSalt,jdbcType=VARCHAR},
+      </if>
+      <if test="rememberType != null" >
+        #{rememberType,jdbcType=INTEGER},
+      </if>
+      <if test="ipAddress != null" >
+        #{ipAddress,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <!--  通过用户登陆名 获取用户的身份信息 -->
+  <select id="getUserInfoByLoginName" parameterType="java.lang.String" resultMap="BaseResultMap" >
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM t_shiro_user_info
+    WHERE login_name = #{loginName,jdbcType=VARCHAR}
+  </select>
+
+
+</mapper>

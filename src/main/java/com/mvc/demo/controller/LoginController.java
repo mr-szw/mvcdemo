@@ -9,6 +9,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.apache.shiro.subject.Subject;
@@ -107,13 +108,12 @@ public class LoginController {
 
 
     /**
-     *
      * @return 注解的权限配置
      * 需要有什么角色
      * 需要有什么权限
      */
-    @RequiresRoles(value = {"admin", "userA"})
-    @RequiresPermissions(value = {"user:delete"})
+    @RequiresRoles(value = {"admin", "userA"}, logical = Logical.OR)
+    @RequiresPermissions(value = {"user:delete"}, logical = Logical.AND)
     @GetMapping(value = "delete")
     public String deleteOp() {
         return "权限";
