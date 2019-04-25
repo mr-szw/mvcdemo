@@ -36,6 +36,7 @@
             <set>
                 <value>${redis.sentinels.server1}</value>
                 <value>${redis.sentinels.server2}</value>
+                <value>${redis.sentinels.server3}</value>
             </set>
         </constructor-arg>
         <constructor-arg index="2" ref="jedisPoolConfig" />

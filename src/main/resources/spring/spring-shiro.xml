@@ -20,6 +20,8 @@
         <property name="securityManager" ref="shiroSecurityManager" />
         <!-- 登陆页URL-->
         <property name="loginUrl" value="/static/views/toLogin.html" />
+        <!-- 成功跳转页 -->
+        <property name="successUrl" value="/static/views/homePageIndex.html" />
         <!-- 校验不成功的对应页面 -->
         <property name="unauthorizedUrl" value="/static/views/toLogin.html" />
         <!-- 拦截器链定义
@@ -47,6 +49,7 @@
     <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
 
 
+    <!-- 启用 Shiro 注解 -->
     <bean id="attributeSourceAdvisor" class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor" >
         <property name="securityManager" ref="shiroSecurityManager" />
     </bean>

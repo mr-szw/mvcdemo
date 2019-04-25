@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mvc.demo.mapper.ShiroPermissionInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.mvc.demo.pojo.ShiroPermissionInfo" >
+    <constructor >
+      <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="permission_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="role_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+    </constructor>
+  </resultMap>
+
+
+
+
+
+
+
+
+  <sql id="Base_Column_List" >
+    id, permission_name, role_id
+  </sql>
+
+  <!-- 获取权限 -->
+  <select id="getPermissonListByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select
+    <include refid="Base_Column_List" />
+    FROM
+    t_shiro_user_with_role userWithRole,
+    t_shiro_role_with_permission roleWithPermission,
+    t_shiro_permission_info pInfo
+    WHERE
+    userWithRole.user_id =  #{userId,jdbcType=BIGINT}
+    AND roleWithPermission.role_id = userWithRole.role_id
+    AND roleWithPermission.permission_id = pInfo.id;
+
+  </select>
+
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_shiro_permission_info
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_shiro_permission_info
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.mvc.demo.pojo.ShiroPermissionInfoExample" >
+    delete from t_shiro_permission_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.mvc.demo.pojo.ShiroPermissionInfo" >
+    insert into t_shiro_permission_info (id, permission_name, role_id
+      )
+    values (#{id,jdbcType=BIGINT}, #{permissionName,jdbcType=VARCHAR}, #{roleId,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.mvc.demo.pojo.ShiroPermissionInfo" >
+    insert into t_shiro_permission_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="permissionName != null" >
+        permission_name,
+      </if>
+      <if test="roleId != null" >
+        role_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="permissionName != null" >
+        #{permissionName,jdbcType=VARCHAR},
+      </if>
+      <if test="roleId != null" >
+        #{roleId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.mvc.demo.pojo.ShiroPermissionInfoExample" resultType="java.lang.Integer" >
+    select count(*) from t_shiro_permission_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update t_shiro_permission_info
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.permissionName != null" >
+        permission_name = #{record.permissionName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.roleId != null" >
+        role_id = #{record.roleId,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update t_shiro_permission_info
+    set id = #{record.id,jdbcType=BIGINT},
+      permission_name = #{record.permissionName,jdbcType=VARCHAR},
+      role_id = #{record.roleId,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.mvc.demo.pojo.ShiroPermissionInfo" >
+    update t_shiro_permission_info
+    <set >
+      <if test="permissionName != null" >
+        permission_name = #{permissionName,jdbcType=VARCHAR},
+      </if>
+      <if test="roleId != null" >
+        role_id = #{roleId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.mvc.demo.pojo.ShiroPermissionInfo" >
+    update t_shiro_permission_info
+    set permission_name = #{permissionName,jdbcType=VARCHAR},
+      role_id = #{roleId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

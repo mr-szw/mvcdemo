@@ -3,7 +3,8 @@ package com.mvc.demo.controller;
 import com.alibaba.fastjson.JSON;
 import com.mvc.demo.enums.ErrorEnum;
 import com.mvc.demo.pojo.ResultDto;
-import com.mvc.demo.pojo.UserInfoDto;
+
+import com.mvc.demo.pojo.ShiroUserInfo;
 import com.mvc.demo.utils.RequestHelper;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -38,7 +39,7 @@ public class LoginController {
      * @param userInfoDto 登陆用户信息体
      */
     @PostMapping(value = "/subLogin")
-    public String login(UserInfoDto userInfoDto, Model model, String callbackUrl, HttpServletRequest request) {
+    public String login(ShiroUserInfo userInfoDto, Model model, String callbackUrl, HttpServletRequest request) {
         logger.info("登陆信息为 userInfo={}, callbackUrl={}", JSON.toJSONString(userInfoDto), callbackUrl);
 
         ResultDto<String> resultDto = new ResultDto<>();
@@ -47,7 +48,7 @@ public class LoginController {
             resultDto.setParamError();
         } else {
             String ipAddress = RequestHelper.getIpAddress(request);
-            userInfoDto.setLoginHost(ipAddress);
+            userInfoDto.setIpAddress(ipAddress);
             Integer rememberType = userInfoDto.getRememberType();
             boolean rememberMe = false;
             if(rememberType != null && rememberType == 1) {
