@@ -77,8 +77,6 @@ public class LoginController {
                 resultDto.setData(e.getMessage());
             }
         }
-
-
         logger.info("登陆结果为： resultUrl={} resultDto={}", resultUrl, JSON.toJSONString(resultDto));
         model.addAttribute("resultData", resultDto);
         return resultUrl;
@@ -96,12 +94,26 @@ public class LoginController {
         return subject.isAuthenticated() ? "redirect:/home/index" : "/toLogin";
     }
 
+
+    /**
+     * 转到登陆页面
+     */
+    @RequestMapping({"/toLogin"})
+    public String toLoginPage() {
+        logger.info("进入登陆页面请求~~~~~");
+        Subject subject = SecurityUtils.getSubject();
+        //已经认证跳转取去主页面 否则去登陆
+        return subject.isAuthenticated() ? "redirect:/home/index" : "redirect:/";
+    }
+
+
     /**
      * 进入首页
      */
     @GetMapping(value = "/home/index")
     public String homePageIndex() {
         logger.info("进入主页面请求~~~~~");
+
         Subject subject = SecurityUtils.getSubject();
         //已经认证跳转取去主页面 否则去登陆
         return subject.isAuthenticated() ? "/homePageIndex" : "/toLogin";

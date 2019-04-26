@@ -46,12 +46,7 @@
     delete from t_shiro_permission_info
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <delete id="deleteByExample" parameterType="com.mvc.demo.pojo.ShiroPermissionInfoExample" >
-    delete from t_shiro_permission_info
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-  </delete>
+
   <insert id="insert" parameterType="com.mvc.demo.pojo.ShiroPermissionInfo" >
     insert into t_shiro_permission_info (id, permission_name, role_id
       )
@@ -83,38 +78,7 @@
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.mvc.demo.pojo.ShiroPermissionInfoExample" resultType="java.lang.Integer" >
-    select count(*) from t_shiro_permission_info
-    <if test="_parameter != null" >
-      <include refid="Example_Where_Clause" />
-    </if>
-  </select>
-  <update id="updateByExampleSelective" parameterType="map" >
-    update t_shiro_permission_info
-    <set >
-      <if test="record.id != null" >
-        id = #{record.id,jdbcType=BIGINT},
-      </if>
-      <if test="record.permissionName != null" >
-        permission_name = #{record.permissionName,jdbcType=VARCHAR},
-      </if>
-      <if test="record.roleId != null" >
-        role_id = #{record.roleId,jdbcType=BIGINT},
-      </if>
-    </set>
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExample" parameterType="map" >
-    update t_shiro_permission_info
-    set id = #{record.id,jdbcType=BIGINT},
-      permission_name = #{record.permissionName,jdbcType=VARCHAR},
-      role_id = #{record.roleId,jdbcType=BIGINT}
-    <if test="_parameter != null" >
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
+
   <update id="updateByPrimaryKeySelective" parameterType="com.mvc.demo.pojo.ShiroPermissionInfo" >
     update t_shiro_permission_info
     <set >

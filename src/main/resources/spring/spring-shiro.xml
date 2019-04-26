@@ -1,29 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <!-- 加密器  凭证匹配器 -->
-    <bean id="credentialMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
-        <property name="hashAlgorithmName" value="md5" />
-        <property name="hashIterations" value="1" />
-    </bean>
-
-    <!-- Shiro 的数据源管控类 -->
-    <bean id="myShiroRealm" class="com.mvc.demo.shiro.MyShiroRealm">
-        <property name="name" value="myShiroRealm" />
-        <property name="credentialsMatcher" ref="credentialMatcher" />
-    </bean>
 
     <!-- ShiroFilter 的过滤器工厂 -->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
-        <property name="securityManager" ref="shiroSecurityManager" />
+        <!-- Shiro的核心安全接口  -->
+        <property name="securityManager" ref="shiroSecurityManager"/>
         <!-- 登陆页URL-->
-        <property name="loginUrl" value="/static/views/toLogin.html" />
+        <property name="loginUrl" value="/static/views/toLogin.html"/>
         <!-- 成功跳转页 -->
-        <property name="successUrl" value="/static/views/homePageIndex.html" />
+        <property name="successUrl" value="/static/views/homePageIndex.html"/>
         <!-- 校验不成功的对应页面 -->
-        <property name="unauthorizedUrl" value="/static/views/toLogin.html" />
+        <property name="unauthorizedUrl" value="/static/views/toLogin.html"/>
         <!-- 拦截器链定义
            anon 不需要验证
            authc 需要验证 -->
@@ -39,43 +29,53 @@
 
     <!-- Shiro的 SecurityManager -->
     <bean id="shiroSecurityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
-        <property name="realm" ref="myShiroRealm" />
-        <property name="sessionManager" ref="webSessionManager" />
-        <property name="cacheManager" ref="cacheManager" />
-        <property name="rememberMeManager" ref="cookieRememberMeManager" />
+        <property name="realm" ref="myShiroRealm"/>
+        <!--<property name="sessionManager" ref="webSessionManager"/>-->
+        <!--<property name="cacheManager" ref="cacheManager"/>-->
+        <!--<property name="rememberMeManager" ref="cookieRememberMeManager"/>-->
     </bean>
+
 
     <!-- Shiro生命周期处理器 -->
-    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
-
-
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
     <!-- 启用 Shiro 注解 -->
-    <bean id="attributeSourceAdvisor" class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor" >
-        <property name="securityManager" ref="shiroSecurityManager" />
+    <bean id="attributeSourceAdvisor" class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="shiroSecurityManager"/>
+    </bean>
+    <!-- 加密器  凭证匹配器 -->
+    <bean id="credentialMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+        <property name="hashAlgorithmName" value="md5"/>
+        <property name="hashIterations" value="1"/>
     </bean>
 
-
+    <!-- Shiro 的数据源管控类 -->
+    <bean id="myShiroRealm" class="com.mvc.demo.shiro.MyShiroRealm">
+        <property name="name" value="myShiroRealm"/>
+        <property name="credentialsMatcher" ref="credentialMatcher"/>
+    </bean>
+    <!-- SessionManager -->
+    <bean id="webSessionManager" class="com.mvc.demo.shiro.MyWebSessionManager">
+        <property name="sessionDAO" ref="redisSessionDao"/>
+    </bean>
+    <!-- Redis Session Dao -->
+    <bean id="redisSessionDao" class="com.mvc.demo.service.RedisSessionDao">
+        <!-- 失效时间 两周 秒为单位 -->
+        <property name="generalExpireTime" value="1209600"/>
+    </bean>
+    <!-- 使用缓存管理 -->
+    <bean id="cacheManager" class="com.mvc.demo.shiro.MyRedisCacheManager">
+    </bean>
+    <!-- Remenber me Session-->
+    <bean id="cookieRememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
+        <property name="cookie" ref="sessionIdCookie"/>
+    </bean>
     <!-- 会话Cookie模板 -->
     <bean id="sessionIdCookie" class="org.apache.shiro.web.servlet.SimpleCookie">
         <constructor-arg value="rememberMe"/>
         <property name="httpOnly" value="true"/>
+        <!-- 单位:秒 -->
         <property name="maxAge" value="180000"/>
     </bean>
-    <bean id="cookieRememberMeManager" class="org.apache.shiro.web.mgt.CookieRememberMeManager">
-        <property name="cookie" ref="sessionIdCookie" />
-    </bean>
 
-    <!-- SessionManager -->
-    <bean id="webSessionManager" class="com.mvc.demo.shiro.MyWebSessionManager" >
-        <property name="sessionDAO" ref="redisSessionDao" />
-    </bean>
-    <!-- Redis Session Dao -->
-    <bean  id="redisSessionDao" class="com.mvc.demo.service.RedisSessionDao" >
-        <!-- 失效时间 两周 秒为单位 -->
-        <property name="generalExpireTime" value="1209600" />
-    </bean>
 
-    <!-- 使用缓存管理 -->
-    <bean id="cacheManager" class="com.mvc.demo.shiro.MyRedisCacheManager" >
-    </bean>
 </beans>

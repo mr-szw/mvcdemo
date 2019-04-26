@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
                             http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
                  http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
+    <!-- 扫包 -->
     <context:component-scan base-package="com.mvc.demo.controller"/>
-
     <!-- 告知Spring，我们启用注解驱动 -->
     <mvc:annotation-driven>
         <!-- 解决返回中文乱码 -->
@@ -19,17 +18,13 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
 
-    <!--
     <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
-           &lt;!&ndash; <mvc:exclude-mapping path=""/>&ndash;&gt;
-            &lt;!&ndash;定义在<mvc:interceptor>下面的表示匹配指定路径的请求才进行拦截&ndash;&gt;
-            <bean class="com.daojia.hockday.interceptors.MyInterceptor"/>
+            <mvc:exclude-mapping path="/toLogin"/>
+            <bean class="com.mvc.demo.interceptors.UserLoginInterceptor"/>
         </mvc:interceptor>
-    </mvc:interceptors>-->
-
-
+    </mvc:interceptors>
 
 
     <!-- 定义文件解释器 -->
@@ -47,7 +42,7 @@
     <!-- 对模型视图名称的解析，即在模型视图名称添加前后缀(如果最后一个还是表示文件夹,则最后的斜杠不要漏了) 使用JSP-->
     <!-- 默认的视图解析器 在上边的解析错误时使用 (默认使用html)- -->
     <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/static/views/" />
+        <property name="prefix" value="/static/views/"/>
         <property name="suffix" value=".html"/>
     </bean>
 </beans>
