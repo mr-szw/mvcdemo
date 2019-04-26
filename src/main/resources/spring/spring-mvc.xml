@@ -22,6 +22,7 @@
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
             <mvc:exclude-mapping path="/toLogin"/>
+            <mvc:exclude-mapping path="/subLogin"/>
             <bean class="com.mvc.demo.interceptors.UserLoginInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
