@@ -1,20 +1,17 @@
 package com.mvc.demo.shiro;
 
 import com.mvc.demo.utils.RedisHelper;
-import org.apache.shiro.cache.Cache;
-import org.apache.shiro.cache.CacheException;
-import org.springframework.stereotype.Component;
-import org.springframework.util.SerializationUtils;
-
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.apache.shiro.cache.Cache;
+import org.apache.shiro.cache.CacheException;
+import org.springframework.util.SerializationUtils;
 
 /**
  * @author Dawei 2018/12/14
  */
-@Component
 public class RedisCache<K, V> implements Cache<K, V> {
 
     private static final String REDIS_PRE = "PRE:";

@@ -30,9 +30,9 @@
     <!-- Shiro的 SecurityManager -->
     <bean id="shiroSecurityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
         <property name="realm" ref="myShiroRealm"/>
-        <!--<property name="sessionManager" ref="webSessionManager"/>-->
-        <!--<property name="cacheManager" ref="cacheManager"/>-->
-        <!--<property name="rememberMeManager" ref="cookieRememberMeManager"/>-->
+        <property name="sessionManager" ref="webSessionManager"/>
+        <property name="cacheManager" ref="cacheManager"/>
+        <property name="rememberMeManager" ref="cookieRememberMeManager"/>
     </bean>
 
 
